@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity, FlatList } from 'react-native';
-import { Container, Content, Text, Thumbnail, Icon } from 'native-base';
+import { Alert, View, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Container, Button, Content, Text, Thumbnail, Icon } from 'native-base';
 import styles from './PublicProfileStyle';
 import * as inviteActions from '../Invite/actions';
 import inviteStore from '../Invite/InviteStore';
@@ -21,6 +21,9 @@ import { ModalHeader } from '../../shared/components/ModalHeader';
 import EditProfile from './EditProfile';
 import { Review } from '../MyJobs/components/Review';
 import { getRatingEmployeeFormat } from '../MyJobs/job-utils';
+import editProfileStyles from './EditProfileStyle';
+import { LOG } from '../../shared';
+// import { LOG, WARN } from '../../shared';
 
 class PublicProfile extends Component {
   static navigationOptions = {
@@ -99,7 +102,31 @@ class PublicProfile extends Component {
     this.setState({ isLoading: false, isRefreshing: false });
     CustomToast(err, 'danger');
   };
-
+  deleteAlert = () => {
+    Alert.alert(
+      i18next.t('Are you sure you want to delete your account?'),
+      '',
+      [
+        {
+          text: i18next.t('APP.cancel'),
+          onPress: () => {
+            LOG(this, 'Cancel delete profile');
+          },
+        },
+        {
+          text: i18next.t('Yes, delete my account'),
+          onPress: () => {
+            CustomToast(
+              'Your account will be deleted in the next 30 calendar days',
+              'success',
+            );
+            LOG(this, 'delete account started process');
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
   render() {
     return (
       <I18n>
@@ -151,9 +178,7 @@ class PublicProfile extends Component {
 
                   {this.state.profile && this.state.profile.user ? (
                     <Text style={styles.textName}>
-                      {`${this.state.profile.user.first_name} ${
-                        this.state.profile.user.last_name
-                      }`}
+                      {`${this.state.profile.user.first_name} ${this.state.profile.user.last_name}`}
                     </Text>
                   ) : null}
                 </>
@@ -270,6 +295,14 @@ class PublicProfile extends Component {
                     </Text>
                   </View>
                 )}
+              <Button
+                full
+                onPress={this.deleteAlert}
+                style={editProfileStyles.viewButtonResume}>
+                <Text style={editProfileStyles.textButtom}>
+                  {'Delete Account'}
+                </Text>
+              </Button>
             </Content>
           </Container>
         )}
@@ -329,3 +362,4 @@ class PublicProfile extends Component {
 PublicProfile.routeName = 'PublicProfile';
 
 export default PublicProfile;
+
