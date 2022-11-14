@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:17075891318:android:90be1a75d15a03d2",
         "android_client_info": {
-          "package_name": "co.jobcore.talent"
+          "package_name": "co.jobcore.talent.beta"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "17075891318-m06emfuelonkg33avrh7qsda8l3epqd1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "co.jobcore.talent"
+                "bundle_id": "co.jobcore.talent.beta"
               }
             }
           ]
