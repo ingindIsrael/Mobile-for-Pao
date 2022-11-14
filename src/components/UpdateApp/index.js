@@ -20,7 +20,7 @@ class UpdateApp extends Component {
       ).catch((err) => console.error('An error occurred', err));
     } else {
       Linking.openURL(
-        'https://play.google.com/store/apps/details?id=co.jobcore.talent',
+        'https://play.google.com/store/apps/details?id=co.jobcore.talent.beta',
       ).catch((err) => console.error('An error occurred', err));
     }
   };
