@@ -1,8 +1,9 @@
-package co.jobcore.talent;
+package co.jobcore.talent.beta;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativegleapsdk.GleapsdkPackage;
 //import com.RNFetchBlob.RNFetchBlobPackage;
 //import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 //import org.wonday.pdf.RCTPdfView;
@@ -30,7 +31,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
+// import io.gleap.Gleap;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GleapsdkPackage(),
 //            new RNFetchBlobPackage(),
 //            new RNVersionCheckPackage(),
 //            new RCTPdfView(),
@@ -87,5 +89,11 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    // Gleap.initialize("P26aq9PfN8vTJNCG94pBGnLHpiabvUJ5", this);
   }
+  // @Override
+  // protected void onCreate(Bundle savedInstanceState) {
+  //     ....
+  //     Gleap.initialize("P26aq9PfN8vTJNCG94pBGnLHpiabvUJ5", this);
+  // }
 }
