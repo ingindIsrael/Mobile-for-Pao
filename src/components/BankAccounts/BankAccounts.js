@@ -102,90 +102,95 @@ class BankAccounts extends FluxView {
   render() {
     const { isLoading, bankAccounts } = this.state;
     return (
-      <I18n>
-        {(t) => (
-          <Container>
-            <ModalHeader title={t('BANK_ACCOUNTS.bankAccounts')} />
-            {isLoading ? <Loading /> : null}
-            <Content>
-              <View style={bankAccountsStyle.container}>
-                <View>
-                  {bankAccounts.length > 0 && (
-                    <View
-                      style={{
-                        paddingTop: 5,
-                      }}>
-                      <Text
-                        style={{
-                          marginBottom: 15,
-                          fontWeight: '700',
-                          fontSize: 24,
-                          lineHeight: 45,
-                        }}>
-                        {'Your bank account is ready to receive payment.'}
-                      </Text>
-                    </View>
-                  )}
-                  <Form>
-                    {bankAccounts.length > 0 ? (
-                      bankAccounts.map(
-                        (bankAccount: BankAccount, i: number) => {
-                          return (
-                            <View key={i} style={bankAccountsStyle.formStyle}>
-                              <Item
-                                style={bankAccountsStyle.viewInput}
-                                inlineLabel
-                                rounded>
-                                <Label>
-                                  <Text style={{ fontWeight: '500' }}>
-                                    {bankAccount.institution_name +
-                                      '\n' +
-                                      bankAccount.name +
-                                      ' - ' +
-                                      bankAccount.account}
-                                  </Text>
-                                </Label>
-                              </Item>
+      <Text style={{ margin: 25, fontSize: 30 }}>
+        You must notify your employer of the bank account(s) into which you wish to receive your compensation. This app is not responsible for payments from or to any organization, employee or company. 
+        Payments must be made separately between the employer and the employee
+      </Text>
+      // <I18n>
+      //   {(t) => (
+      //     <Container>
+      //       <ModalHeader title={t('BANK_ACCOUNTS.bankAccounts')} />
+      //       {isLoading ? <Loading /> : null}
+      //       <Content>
+      //         <View style={bankAccountsStyle.container}>
+      //           <View>
+      //             {bankAccounts.length > 0 && (
+      //               <View
+      //                 style={{
+      //                   paddingTop: 5,
+      //                 }}>
+      //                 <Text
+      //                   style={{
+      //                     marginBottom: 15,
+      //                     fontWeight: '700',
+      //                     fontSize: 24,
+      //                     lineHeight: 45,
+      //                   }}>
+      //                   {'Your bank account is ready to receive payment.'}
+      //                 </Text>
+      //               </View>
+      //             )}
+      //             <Form>
+      //               {bankAccounts.length > 0 ? (
+      //                 bankAccounts.map(
+      //                   (bankAccount: BankAccount, i: number) => {
+      //                     return (
+      //                       <View key={i} style={bankAccountsStyle.formStyle}>
+      //                         <Item
+      //                           style={bankAccountsStyle.viewInput}
+      //                           inlineLabel
+      //                           rounded>
+      //                           <Label>
+      //                             <Text style={{ fontWeight: '500' }}>
+      //                               {bankAccount.institution_name +
+      //                                 '\n' +
+      //                                 bankAccount.name +
+      //                                 ' - ' +
+      //                                 bankAccount.account}
+      //                             </Text>
+      //                           </Label>
+      //                         </Item>
 
-                              <TouchableOpacity
-                                onPress={() =>
-                                  this.deleteBankAccountAlert(bankAccount)
-                                }>
-                                <Image
-                                  style={bankAccountsStyle.garbageIcon}
-                                  source={require('../../assets/image/delete.png')}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          );
-                        },
-                      )
-                    ) : (
-                      <Text style={bankAccountsStyle.noDocsText}>
-                        {t('BANK_ACCOUNTS.noBankAccounts')}
-                      </Text>
-                    )}
-                  </Form>
-                </View>
-              </View>
-            </Content>
-            <View style={bankAccountsStyle.buttonContainer}>
-              {!isLoading && bankAccounts.length === 0 && (
-                <TouchableOpacity onPress={this.goToAddBankAccounts}>
-                  <View full style={bankAccountsStyle.viewButtomLogin}>
-                    <Text style={bankAccountsStyle.textButtom}>
-                      {t('BANK_ACCOUNTS.addBankAccount')}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-            </View>
-          </Container>
-        )}
-      </I18n>
+      //                         <TouchableOpacity
+      //                           onPress={() =>
+      //                             this.deleteBankAccountAlert(bankAccount)
+      //                           }>
+      //                           <Image
+      //                             style={bankAccountsStyle.garbageIcon}
+      //                             source={require('../../assets/image/delete.png')}
+      //                           />
+      //                         </TouchableOpacity>
+      //                       </View>
+      //                     );
+      //                   },
+      //                 )
+      //               ) : (
+      //                 <Text style={bankAccountsStyle.noDocsText}>
+      //                   {t('BANK_ACCOUNTS.noBankAccounts')}
+      //                 </Text>
+      //               )}
+      //             </Form>
+      //           </View>
+      //         </View>
+      //       </Content>
+      //       <View style={bankAccountsStyle.buttonContainer}>
+      //         {!isLoading && bankAccounts.length === 0 && (
+      //           <TouchableOpacity onPress={this.goToAddBankAccounts}>
+      //             <View full style={bankAccountsStyle.viewButtomLogin}>
+      //               <Text style={bankAccountsStyle.textButtom}>
+      //                 {t('BANK_ACCOUNTS.addBankAccount')}
+      //               </Text>
+      //             </View>
+      //           </TouchableOpacity>
+      //         )}
+      //       </View>
+      //     </Container>
+      //   )}
+      // </I18n>
     );
   }
 }
 
 BankAccounts.routeName = 'BankAccounts';
 export default BankAccounts;
+
