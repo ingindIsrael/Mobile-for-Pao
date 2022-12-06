@@ -1,6 +1,0 @@
-{
-  "linters": {
-    "*.js": ["prettier --write", "eslint --fix", "git add"]
-  },
-  "ignore": ["native-base-theme/**/*.js"]
-}

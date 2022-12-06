@@ -1,13 +1,10 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 
-import { YellowBox } from 'react-native';
-
-import { Root } from 'native-base';
+import {Root} from 'native-base';
 import LoginScreen from './src/components/Account/LoginScreen';
 import SigninScreen from './src/components/Account/SigninScreen';
 import RegisterScreen from './src/components/Account/RegisterScreen';
@@ -94,15 +91,9 @@ import EditLocation from './src/components/Invite/EditLocation';
 import ApplicationDetailScreen from './src/components/MyJobs/ApplicationDetailScreen';
 import JobCompletedScreen from './src/components/MyJobs/JobCompletedScreen';
 import UpdateApp from './src/components/UpdateApp';
+import {NativeBaseProvider} from 'native-base';
 
-YellowBox.ignoreWarnings([
-  'Warning: isMounted(...) is deprecated',
-  'Warning: Failed prop type',
-  'Module RCTImageLoader',
-]);
-window.DEBUG = false;
-
-export const AuthStack = createStackNavigator({
+const AuthStack = createStackNavigator({
   [LOGIN_ROUTE]: {
     screen: LoginScreen,
     path: 'login/:email',
@@ -120,13 +111,13 @@ export const AuthStack = createStackNavigator({
   [TERMS_AND_CONDITIONS_ROUTE]: TermsAndConditionsScreen,
 });
 
-export const Tabs = createBottomTabNavigator(
+const Tabs = createBottomTabNavigator(
   {
-    [DASHBOARD_ROUTE]: { screen: DashboardScreen },
-    [JOB_INVITES_ROUTE]: { screen: JobInvites },
-    [JOB_PREFERENCES_ROUTE]: { screen: JobPreferences },
-    [MYJOBS_ROUTE]: { screen: MyJobs },
-    [Profile.routeName]: { screen: Profile },
+    [DASHBOARD_ROUTE]: {screen: DashboardScreen},
+    [JOB_INVITES_ROUTE]: {screen: JobInvites},
+    [JOB_PREFERENCES_ROUTE]: {screen: JobPreferences},
+    [MYJOBS_ROUTE]: {screen: MyJobs},
+    [Profile.routeName]: {screen: Profile},
   },
   {
     tabBarPosition: 'bottom',
@@ -152,7 +143,7 @@ export const Tabs = createBottomTabNavigator(
   },
 );
 
-export const AppStack = createStackNavigator(
+const AppStack = createStackNavigator(
   {
     Tabs,
     [SETTING_ROUTE]: SettingScreen,
@@ -164,13 +155,13 @@ export const AppStack = createStackNavigator(
     [AddBankAccount.routeName]: AddBankAccount,
     [EditProfile.routeName]: EditProfile,
     [PublicProfile.routeName]: PublicProfile,
-    [JOB_PREFERENCES_ONBOARDING_ROUTE]: { screen: JobPreferencesOnboarding },
-    [POSITION_ONBOARDING_ROUTE]: { screen: PositionOnboarding },
-    [LOCATION_ONBOARDING_ROUTE]: { screen: LocationOnboarding },
-    [AVAILABILITY_ONBOARDING_ROUTE]: { screen: AvailabilityOnboarding },
-    [PICTURE_ONBOARDING_ROUTE]: { screen: PictureOnboarding },
-    [DOB_ONBOARDING_ROUTE]: { screen: DOBOnboarding },
-    [RESUME_ONBOARDING_ROUTE]: { screen: ResumeOnboarding },
+    [JOB_PREFERENCES_ONBOARDING_ROUTE]: {screen: JobPreferencesOnboarding},
+    [POSITION_ONBOARDING_ROUTE]: {screen: PositionOnboarding},
+    [LOCATION_ONBOARDING_ROUTE]: {screen: LocationOnboarding},
+    [AVAILABILITY_ONBOARDING_ROUTE]: {screen: AvailabilityOnboarding},
+    [PICTURE_ONBOARDING_ROUTE]: {screen: PictureOnboarding},
+    [DOB_ONBOARDING_ROUTE]: {screen: DOBOnboarding},
+    [RESUME_ONBOARDING_ROUTE]: {screen: ResumeOnboarding},
     [EDIT_LOCATION_ROUTE]: EditLocation,
     [AVAILABILITY_ROUTE]: Availability,
     [POSITION_ROUTE]: Position,
@@ -212,7 +203,7 @@ export const AppStack = createStackNavigator(
       screen: Help,
     },
   },
-  { navigationOptions: { header: null } },
+  {navigationOptions: {header: null}},
 );
 
 const SwitchNavigator = createSwitchNavigator(
@@ -226,11 +217,19 @@ const SwitchNavigator = createSwitchNavigator(
     initialRouteName: 'AuthLoading',
   },
 );
+const AppContainer = createAppContainer(SwitchNavigator);
 
 const prefix = 'https://talent.jobcore.co/';
-
-export default () => (
+const App = () => (
   <Root>
-    <SwitchNavigator uriPrefix={prefix}/>
+    <AppContainer />
   </Root>
 );
+
+export default App;
+
+// export default () => (
+//   <NativeBaseProvider>
+//     <SwitchNavigator uriPrefix={prefix}/>
+//   </NativeBaseProvider>
+// );

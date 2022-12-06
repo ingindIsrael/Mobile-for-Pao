@@ -47,7 +47,7 @@ import { LOG, WARN } from '../../shared';
 import StarComponent from './starsComponent';
 import { I18n } from 'react-i18next';
 import { i18next } from '../../i18n';
-import firebase from 'react-native-firebase';
+//import firebase from 'react-native-firebase';
 
 import { NavigationActions } from 'react-navigation';
 import PROFILE_IMG from '../../assets/image/profile.png';
@@ -64,7 +64,9 @@ import { fetchActiveShiftsV2, getCompletedJobs } from '../MyJobs/actions';
 import { log } from 'pure-logger';
 import UploadDocumentScreen from '../Account/UploadDocumentScreen';
 import FederalW4tScreen from '../Account/FederalW4tScreen';
-
+import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 /**
  *
  */
@@ -108,7 +110,7 @@ class DashboardScreen extends Component {
   }
 
   async componentDidMount() {
-    console.log('firebase', firebase);
+    //console.log('firebase', firebase);
 
     this.logoutSubscription = accountStore.subscribe(
       'Logout',
@@ -193,9 +195,7 @@ class DashboardScreen extends Component {
       this.errorHandler,
     );
 
-    this.onTokenRefreshListener = firebase
-      .messaging()
-      .onTokenRefresh((fcmToken) => {
+    this.onTokenRefreshListener = messaging().onTokenRefresh((fcmToken) => {
         let fcmTokenStored;
 
         try {
@@ -209,61 +209,66 @@ class DashboardScreen extends Component {
         this.updateFcmToken(fcmTokenStored, fcmToken);
       });
 
-    this.notificationOpenedListener = firebase
-      .notifications()
-      .onNotificationOpened((notificationOpen) => {
+    this.notificationOpenedListener = messaging() 
+      .onNotificationOpenedApp((notificationOpen) => {
         if (notificationOpen) {
           // const action = notificationOpen.action;
           console.log('notificationTest', notificationOpen);
-          const notification = notificationOpen.notification;
+          const notification = notificationOpen;
           this.pushNotificationHandler(notification.data);
         }
       });
 
-    this.unsubscribeFromNotificationListener = firebase
-      .notifications()
-      .onNotification((notification) => {
+    this.unsubscribeFromNotificationListener =  messaging() 
+      .onMessage((notification) => {
         if (Platform.OS === 'android') {
-          const localNotification = new firebase.notifications.Notification({
-            sound: 'default',
-            show_in_foreground: true,
-          })
-            .setNotificationId(notification.notificationId)
-            .setTitle(notification.title)
-            .setSubtitle(notification.subtitle)
-            .setBody(notification.body)
-            .setData(notification.data)
-            .android.setChannelId('channelId') // e.g. the id you chose above
-            .android.setSmallIcon('ic_stat_notification') // create this icon in Android Studio
-            .android.setColor('#000000') // you can set a color here
-            .android.setPriority(firebase.notifications.Android.Priority.High);
+          // const localNotification = new firebase.notifications.Notification({
+          //   sound: 'default',
+          //   show_in_foreground: true,
+          // })
+          //   .setNotificationId(notification.messageId)
+          //   .setTitle(notification.title)
+          //   .setSubtitle(notification.subtitle)
+          //   .setBody(notification.body)
+          //   .setData(notification.data)
+          //   .android.setChannelId('channelId') // e.g. the id you chose above
+          //   .android.setSmallIcon('ic_stat_notification') // create this icon in Android Studio
+          //   .android.setColor('#000000') // you can set a color here
+          //   .android.setPriority(firebase.notifications.Android.Priority.High);
 
-          firebase
-            .notifications()
-            .displayNotification(localNotification)
-            .catch((err) => console.error(err));
+          // firebase
+          //   .notifications()
+          //   .displayNotification(localNotification)
+          //   .catch((err) => console.error(err));
         } else if (Platform.OS === 'ios') {
-          const localNotification = new firebase.notifications.Notification()
-            .setNotificationId(notification.notificationId)
-            .setTitle(notification.title)
-            .setSubtitle(notification.subtitle)
-            .setBody(notification.body)
-            .setData(notification.data)
-            .ios.setBadge(notification.ios.badge);
 
-          firebase
-            .notifications()
-            .displayNotification(localNotification)
-            .catch((err) => console.error(err));
+          PushNotificationIOS.addNotificationRequest({
+            id: notification.messageId,
+            title: notification.notification.title,
+            subtitle: notification.notification.title,
+            body: notification.notification.body, 
+            badge: 1,
+          });
+          // const localNotification = new firebase.notifications.Notification()
+          //   .setNotificationId(notification.notificationId)
+          //   .setTitle(notification.title)
+          //   .setSubtitle(notification.subtitle)
+          //   .setBody(notification.body)
+          //   .setData(notification.data)
+          //   .ios.setBadge(notification.ios.badge);
+
+          // firebase
+          //   .notifications()
+          //   .displayNotification(localNotification)
+          //   .catch((err) => console.error(err));
         }
       });
-    firebase
-      .notifications()
-      .getInitialNotification()
-      .then((notificationOpen) => {
+    
+    messaging() 
+    .onNotificationOpenedApp((notificationOpen) => {
         if (notificationOpen) {
           // const action = notificationOpen.action;
-          const notification = notificationOpen.notification;
+          const notification = notificationOpen;
           this.pushNotificationHandler(notification.data);
         }
       });
@@ -1259,8 +1264,8 @@ class DashboardScreen extends Component {
 
     if (!fcmTokenStored) return WARN(this, 'No Token on state');
 
-    firebase
-      .messaging()
+    
+      messaging()
       .getToken()
       .then((fcmToken) => {
         if (fcmToken) {
@@ -1282,8 +1287,7 @@ class DashboardScreen extends Component {
     });
   };
   hasFcmMessagePermission = () => {
-    firebase
-      .messaging()
+   messaging()
       .hasPermission()
       .then((enabled) => {
         if (enabled) {
@@ -1296,8 +1300,7 @@ class DashboardScreen extends Component {
   };
 
   requestFcmMessagesPermission = () => {
-    firebase
-      .messaging()
+   messaging()
       .requestPermission()
       .then(() => {
         LOG(this, 'FCM authorized by the user');

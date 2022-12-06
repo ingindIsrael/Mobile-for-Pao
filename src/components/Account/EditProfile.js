@@ -538,7 +538,7 @@ class EditProfile extends Component {
                           style={{ height: 75 }}
                           value={_userBirthDate ? _userBirthDate : new Date()}
                           mode={'date'}
-                          display="calendar"
+                          display="spinner"
                           maximumDate={new Date()}
                           onChange={(_, date) => {
                             this.setState({

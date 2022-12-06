@@ -51,8 +51,7 @@ import { I18n } from 'react-i18next';
 import { i18next } from '../../i18n';
 import { LOG } from '../../shared';
 import { CustomToast, Loading } from '../../shared/components';
-import { FormView } from '../../shared/platform';
-import firebase from 'react-native-firebase';
+import { FormView } from '../../shared/platform'; 
 import {
   WHITE_MAIN,
   BLUE_DARK,
@@ -189,7 +188,7 @@ class DOBOnboarding extends Component {
                       <DateTimePicker
                         value={_userBirthDate ? _userBirthDate : new Date()}
                         mode={'date'}
-                        display="calendar"
+                        display="spinner"
                         minimumDate={new Date(1920, 1, 1)}
                         maximumDate={new Date()}
                         onChange={(_, date) => {

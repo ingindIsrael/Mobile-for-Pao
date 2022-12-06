@@ -34,10 +34,10 @@ import TouchID from 'react-native-touch-id';
 import { I18n } from 'react-i18next';
 import { LOG } from '../../shared';
 import { CustomToast, Loading } from '../../shared/components';
-import { FormView } from '../../shared/platform';
-import firebase from 'react-native-firebase';
+import { FormView } from '../../shared/platform'; 
 import { WHITE_MAIN, BLUE_DARK } from '../../shared/colorPalette';
 import ValidationCodeScreen from './ValidationCodeScreen';
+import messaging from '@react-native-firebase/messaging';
 
 const optionalConfigObject = {
   title: 'Authentication Required', // Android
@@ -113,6 +113,8 @@ class LoginScreen extends Component {
     TouchID.isSupported().then((biometryType) => {
       this.setState({ biometryType });
     });
+
+  
   }
 
   componentWillUnmount() {
@@ -483,7 +485,7 @@ class LoginScreen extends Component {
   login = async () => {
     this.isLoading(true);
 
-    const fcmToken = await firebase.messaging().getToken();
+    const fcmToken = await messaging().getToken();
 
     LOG(this, JSON.stringify(fcmToken));
 
@@ -497,7 +499,7 @@ class LoginScreen extends Component {
   loginWithTouchId = async (email, password) => {
     this.isLoading(true);
 
-    const fcmToken = await firebase.messaging().getToken();
+   const fcmToken = await messaging().getToken();
 
     LOG(this, JSON.stringify(fcmToken));
 
